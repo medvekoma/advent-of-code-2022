@@ -6,6 +6,7 @@ def bet_value(bet: str) -> int:
         case 'A' | 'X': return 1
         case 'B' | 'Y': return 2
         case 'C' | 'Z': return 3
+        case _: raise RuntimeError(f"Missing bet '{bet}'")
 
 
 def part1_win_points(difference: int) -> int:
@@ -13,6 +14,7 @@ def part1_win_points(difference: int) -> int:
         case -2 | 1: return 6
         case -1 | 2: return 0
         case 0: return 3
+        case _: raise RuntimeError(f"Unexpected difference: {difference}")
 
 
 def part1(content: list[str]) -> None:
@@ -26,6 +28,7 @@ def my_choice(his: int, result: int) -> int:
         case 2: return his
         case 1: return 1 + (his - 1 + 2) % 3
         case 3: return 1 + (his - 1 + 1) % 3
+        case _: raise RuntimeError(f"Unexpected choice: {his}")
 
 
 def part2_win_points(choice: int) -> int:
@@ -33,6 +36,7 @@ def part2_win_points(choice: int) -> int:
         case 1: return 0
         case 2: return 3
         case 3: return 6
+        case _: raise RuntimeError(f"Unexpected choice: {choice}")
 
 
 def part2(content: list[str]) -> None:
