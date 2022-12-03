@@ -10,3 +10,7 @@ def split_by(the_list: list[T], element: T) -> Generator[list[T], None, None]:
             yield the_list[start_idx:idx]
             start_idx = idx + 1
     yield the_list[start_idx:]
+
+
+def split_into(collection: list[T], size: int) -> list[list[T]]:
+    return [collection[i:i+size] for i in range(0, len(collection), size)]

@@ -25,8 +25,8 @@ def part1(content: list[str]) -> None:
 
 def my_choice(his: int, result: int) -> int:
     match result:
-        case 2: return his
         case 1: return 1 + (his - 1 + 2) % 3
+        case 2: return his
         case 3: return 1 + (his - 1 + 1) % 3
         case _: raise RuntimeError(f"Unexpected choice: {his}")
 
