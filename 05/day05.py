@@ -16,6 +16,9 @@ def create_stacks(init: List[str]) -> List[List[str]]:
     return stacks
 
 
+MoveFunc = Callable[[List[List[str]], int, int, int], None]
+
+
 def move1(stacks: List[List[str]], count: int, source: int, target: int) -> None:
     for step in range(count):
         value = stacks[source - 1].pop()
@@ -29,8 +32,6 @@ def move2(stacks: List[List[str]], count: int, source: int, target: int) -> None
         stacks[target - 1].append(box)
 
 
-Mover = Callable[[List[List[str]], int, int, int], None]
-
 R = re.compile(r'move (\d+) from (\d+) to (\d+)')
 
 
@@ -43,10 +44,10 @@ def parse_instruction(instruction: str) -> Tuple[int, int, int]:
         raise RuntimeError(f"Incorrect match for '{instruction}'")
 
 
-def part(stacks: List[List[str]], instructions: List[str], mover: Mover) -> str:
+def part(stacks: List[List[str]], instructions: List[str], move: MoveFunc) -> str:
     for instruction in instructions:
         count, source, target = parse_instruction(instruction)
-        mover(stacks, count, source, target)
+        move(stacks, count, source, target)
     result = [stack.pop() for stack in stacks]
     return ''.join(result)
 
