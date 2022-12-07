@@ -1,22 +1,15 @@
 from utils import Loader
-from typing import Dict, List, Optional, Generator
-import os
-from typing_extensions import Self
+from typing import Dict, List, Optional
 import re
 from functools import reduce
 
 
 class Folder:
-    parent: Optional[Self]
-    files: Dict[str, int]
-    folders: Dict[str, Self]
-    total_size: int
-
     def __init__(self, parent=None) -> None:
-        self.parent = parent
-        self.files = {}
-        self.folders = {}
-        self.total_size = 0
+        self.parent: Optional["Folder"] = parent
+        self.files: Dict[str, int] = {}
+        self.folders: Dict[str, "Folder"] = {}
+        self.total_size: int = 0
 
     def calculate_sizes(self) -> None:
         for _, folder in self.folders.items():
@@ -25,13 +18,13 @@ class Folder:
             folder.total_size for _, folder in self.folders.items()
         )
 
-    def flatten(self) -> List[Self]:
-        flattened_folders = reduce(
+    def flatten(self) -> List["Folder"]:
+        flattened_folders: List["Folder"] = reduce(
             lambda a, b: a + b,
             [folder.flatten() for _, folder in self.folders.items()],
             [],
         )
-        return [self] + flattened_folders
+        return [self, *flattened_folders]
 
 
 def get_root(lines: List[str]) -> Folder:

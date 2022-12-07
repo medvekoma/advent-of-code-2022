@@ -1,4 +1,6 @@
 {
     "python.analysis.typeCheckingMode": "basic",
     "python.languageServer": "Default",
+    "python.linting.enabled": true,
+    "python.linting.mypyEnabled": false,
 }
