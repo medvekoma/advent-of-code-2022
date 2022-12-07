@@ -1,11 +1,12 @@
 from utils import Loader, Collections
-from typing import List, Tuple, Callable
+from typing import List, Tuple
 import re
+from enum import Enum
 
 
-def create_stacks(init: List[str]) -> List[List[str]]:
+def create_stacks(crates: List[str]) -> List[List[str]]:
     cols = range(0, 9)
-    rows = init[len(init) - 2::-1]
+    rows = crates[len(crates) - 2::-1]
     stacks: List[List[str]] = [[] for _ in cols]
     for col in cols:
         index = 1 + col * 4
@@ -16,18 +17,15 @@ def create_stacks(init: List[str]) -> List[List[str]]:
     return stacks
 
 
-MoveFunc = Callable[[List[List[str]], int, int, int], None]
+class CrateMover(Enum):
+    CM9000 = 1
+    CM9001 = 2
 
 
-def move1(stacks: List[List[str]], count: int, source: int, target: int) -> None:
-    for step in range(count):
-        value = stacks[source - 1].pop()
-        stacks[target - 1].append(value)
-
-
-def move2(stacks: List[List[str]], count: int, source: int, target: int) -> None:
-    boxes = [stacks[source - 1].pop() for step in range(count)]
-    boxes.reverse()
+def move(stacks: List[List[str]], count: int, source: int, target: int, crate_mover: CrateMover) -> None:
+    boxes = [stacks[source - 1].pop() for _ in range(count)]
+    if crate_mover == CrateMover.CM9001:
+        boxes.reverse()
     for box in boxes:
         stacks[target - 1].append(box)
 
@@ -44,21 +42,21 @@ def parse_instruction(instruction: str) -> Tuple[int, int, int]:
         raise RuntimeError(f"Incorrect match for '{instruction}'")
 
 
-def part(stacks: List[List[str]], instructions: List[str], move: MoveFunc) -> str:
+def process(stacks: List[List[str]], instructions: List[str], crate_mover: CrateMover) -> str:
     for instruction in instructions:
         count, source, target = parse_instruction(instruction)
-        move(stacks, count, source, target)
+        move(stacks, count, source, target, crate_mover)
     result = [stack.pop() for stack in stacks]
     return ''.join(result)
 
 
 def main() -> None:
     lines = Loader.load()
-    init, instructions = Collections.split_by(lines, "")
-    stacks = create_stacks(init)
-    print(f"part 1: {part(stacks, instructions, move1)}")
-    stacks = create_stacks(init)
-    print(f"part 2: {part(stacks, instructions, move2)}")
+    crates, instructions = Collections.split_by(lines, "")
+    stacks = create_stacks(crates)
+    print(f"part 1: {process(stacks, instructions, CrateMover.CM9000)}")
+    stacks = create_stacks(crates)
+    print(f"part 2: {process(stacks, instructions, CrateMover.CM9001)}")
 
 
 if __name__ == "__main__":
