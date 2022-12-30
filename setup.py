@@ -4,5 +4,5 @@ setup(
     name="advent-of-code-2022",
     version="1.0",
     packages=find_packages(),
-    install_requires=[],
+    install_requires=["numpy==1.23.5"],
 )
