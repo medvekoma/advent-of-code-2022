@@ -38,8 +38,8 @@ def get_root(lines: List[str]) -> Folder:
         elif line == "$ cd ..":
             pwd = pwd.parent or root
         elif line.startswith("$ cd "):
-            dir = line[5:]
-            pwd = pwd.folders[dir]
+            folder = line[5:]
+            pwd = pwd.folders[folder]
         elif line.startswith("dir "):
             name = line[4:]
             if not pwd.folders.get(name):
